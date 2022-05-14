@@ -5,7 +5,7 @@ pipeline {
             steps {
             withCredentials([usernamePassword(credentialsId: '7e973a88-e8ab-485e-894c-cb44a3c11d63', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
                sh """
-               docker build  -t hellonode:latest .
+               docker build  -t arwa98/hellonode:latest .
 		       docker login -u ${docker_username} -p ${docker_pass}
     		   docker push arwa98/hellonode:latest
                """
