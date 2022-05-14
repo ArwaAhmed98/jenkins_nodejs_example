@@ -17,7 +17,7 @@ pipeline {
             steps {
             // withCredentials([usernamePassword(credentialsId: 'docker' , passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
                sh """
-             docker run -p 3000:3000 -d hellonode:latest
+             docker run -p 3001:3000 -d hellonode:latest
                 """
 		
             // }
