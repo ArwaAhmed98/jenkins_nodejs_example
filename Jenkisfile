@@ -8,20 +8,11 @@ pipeline {
                docker build  -t arwa98/hellonode:latest .
 		       echo ${docker_pass} | docker login -u ${docker_username} --password-stdin
     		   docker push arwa98/hellonode:latest
+               docker run -p 3000:3000 -d hellonode:latest
                """
                 }
             }
         }
-        stage('CD') {
-            steps {
-            // withCredentials([usernamePassword(credentialsId: 'docker' , passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
-               sh """
-          
-             docker run -p 3000:3000 -d hellonode:latest
-                """
-		
-            // }
-        }
-    }
+    
   }
 }
