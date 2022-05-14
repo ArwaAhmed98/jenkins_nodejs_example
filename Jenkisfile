@@ -14,7 +14,7 @@ pipeline {
         }
         stage('CD') {
             steps {
-                 withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
+            withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
                sh """
              docker login -u ${docker_username} -p ${docker_pass}
              docker run -p 3000:3000 -d hellonode
@@ -23,4 +23,5 @@ pipeline {
             }
         }
     }
+  }
 }
