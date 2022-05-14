@@ -7,7 +7,7 @@ pipeline {
                sh """
                docker build  -t hellonode .
 		       docker login -u ${docker_username} -p ${docker_pass}
-    		   docker push Arwa98/hellonode:latest
+    		   docker push arwa98/hellonode:latest
                """
                 }
             }
