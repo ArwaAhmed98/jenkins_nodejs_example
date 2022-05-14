@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'master' }
+    agent any
     stages {
         stage('CI') {
             steps {
@@ -17,7 +17,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
                sh """
              docker login -u ${docker_username} -p ${docker_pass}
-             docker run -p 3000:3000 -d hellonode
+             docker run -p 3000:3000 -d hellonode:latest
                 """
 		
             }
