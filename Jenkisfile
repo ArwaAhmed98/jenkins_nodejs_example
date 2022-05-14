@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('CI') {
             steps {
-            withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
+            withCredentials([usernamePassword(credentialsId: '7e973a88-e8ab-485e-894c-cb44a3c11d63', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
                sh """
                docker build  -t hellonode .
 		       docker login -u ${docker_username} -p ${docker_pass}
@@ -14,7 +14,7 @@ pipeline {
         }
         stage('CD') {
             steps {
-            withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
+            withCredentials([usernamePassword(credentialsId: '7e973a88-e8ab-485e-894c-cb44a3c11d63', passwordVariable: 'docker_pass', usernameVariable: 'docker_username')]) {
                sh """
              docker login -u ${docker_username} -p ${docker_pass}
              docker run -p 3000:3000 -d hellonode:latest
