@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('CI') {
             steps {
-               docker build. -t hellonode
+               docker build  -t hellonode .
 		docker login -u ${docker_username} -p ${docker_pass}
 		docker push Arwa98/hellonode:latest
             }
