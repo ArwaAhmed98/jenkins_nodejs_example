@@ -1,5 +1,12 @@
 FROM node:12
 COPY nodeapp /nodeapp
 WORKDIR /nodeapp
+ENV RDS_HOSTNAME=env.RDS_HOSTNAME
+ENV RDS_USERNAME=env.RDS_USERNAME
+ENV RDS_PASSWORD=env.RDS_PASSWORD
+ENV RDS_PORT=3000
+ENV PORT=env.PORT
+ENV HOST=env.host
+
 RUN npm install
 CMD ["node", "/nodeapp/app.js"]
