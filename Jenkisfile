@@ -19,6 +19,7 @@ pipeline {
         stage('CD') {
             steps {
                sh """
+               docker rm -f arwa98/hellonode:latest 
                docker run -p 3000:3000 -d --env-file env.list arwa98/hellonode:latest 
                """
             }
