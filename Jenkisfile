@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('CI') {
             steps {
-            withCredentials([
-                usernamePassword(credentialsId: 'docker' , usernameVariable: 'docker_username', passwordVariable: 'docker_pass']) {
+            withCredentials
+            ([usernamePassword(credentialsId: 'docker', usernameVariable: 'docker_username', passwordVariable: 'docker_pass')]) {
                sh """
                docker build  -t arwa98/hellonode:latest .
                docker login -u ${docker_username} -p ${docker_pass}
