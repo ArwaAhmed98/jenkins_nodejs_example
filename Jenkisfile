@@ -6,11 +6,11 @@ pipeline {
             steps {
             withCredentials([
                 usernamePassword(credentialsId: 'docker' , usernameVariable: 'docker_username', passwordVariable: 'docker_pass')]) {
-               sh """
-               docker build  -t arwa98/hellonode:latest .
-               docker login -u ${docker_username} -p ${docker_pass}
-    		   docker push arwa98/hellonode:latest 
-               """
+                    sh """
+                    docker build  -t arwa98/hellonode:latest .
+                    docker login -u ${docker_username} -p ${docker_pass}
+                    docker push arwa98/hellonode:latest 
+                    """
                 }
             }
         }
@@ -38,9 +38,9 @@ pipeline {
         }
         stage('CD') {
             steps {
-              sh """
-              docker run -p 3000:3000 -d --env-file env.list arwa98/hellonode:latest 
-              """
+                sh """
+                docker run -p 3000:3000 -d --env-file env.list arwa98/hellonode:latest 
+                """
             }
         }
     }
