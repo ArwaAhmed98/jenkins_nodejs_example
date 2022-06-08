@@ -48,6 +48,9 @@ pipeline {
             //   sh """
              //  docker run -p 3000:3000 -d --env-file env.list arwa98/hellonode:latest 
               // """
+              sh """
+              echo arwaaaaaaaaaaaa
+              """
             }
         }
     }
