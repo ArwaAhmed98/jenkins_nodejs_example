@@ -42,9 +42,9 @@ pipeline {
         }
         stage('CD') {
             steps {
-               sh """
-               docker run -p 3000:3000 -d --env-file env.list arwa98/hellonode:latest 
-               """
+            //   sh """
+             //  docker run -p 3000:3000 -d --env-file env.list arwa98/hellonode:latest 
+              // """
             }
         }
     }
