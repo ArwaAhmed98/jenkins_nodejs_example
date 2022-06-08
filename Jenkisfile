@@ -1,30 +1,47 @@
 pipeline {
-    agent {label 'privatec2'}
+    agent {label 'privatec2'} // run my pipeline on the private ec2 [connected to jenkins as a slave]
+    //agent any
     stages {
-        stage('CI') {
+        stage('BuildandPushDockerImage') {
             steps {
             withCredentials([
                 usernamePassword(credentialsId: 'docker' , usernameVariable: 'docker_username', passwordVariable: 'docker_pass')]) {
-               sh """
-               docker build  -t arwa98/hellonode:latest .
-               docker login -u ${docker_username} -p ${docker_pass}
-    		   docker push arwa98/hellonode:latest 
-               
-               
-               """
+                    sh """
+                    docker build  -t arwa98/hellonode:latest .
+                    docker login -u ${docker_username} -p ${docker_pass}
+                    docker push arwa98/hellonode:latest 
+                    """
                 }
             }
         }
-
+        stage('sonarQube'){
+            steps {
+                script {
+                    def pipelineConfig=[
+                        sonarQubeServer: 'sonarqube',
+                    ]
+                    def repositoryUrl = scm.userRemoteConfigs[0].getUrl()
+                    def GIT_REPO_NAME = scm.userRemoteConfigs[0].getUrl().tokenize('/').last().split("\\.")[0]
+                    def scannerHome = tool 'sonar_scanner'
+                    def SONAR_BRANCH_NAME = env.BRANCH_NAME
+                    withSonarQubeEnv(pipelineConfig.sonarQubeServer) {
+                        sh "sed -i s#{{repo_name}}#${GIT_REPO_NAME}# sonar-project.properties"
+                        sh "sed -i s#{{branch_name}}#${SONAR_BRANCH_NAME}# sonar-project.properties"
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion=${SONAR_BRANCH_NAME} -Dsonar.buildString=Jenkins-${SONAR_BRANCH_NAME}-BLD${env.BUILD_NUMBER}"
+                    }
+                    //TODO: enable step (requires webhook on Sonarqube server)
+                    //timeout(time: 10, unit: 'MINUTES') {
+                        // waitForQualityGate abortPipeline: true
+                    //}
+                }
+            }
+        }
         stage('CD') {
             steps {
-               sh """
-               docker rm -f nodeapp
-               docker run -p 3000:3000 -d --name nodeapp --env-file env.list arwa98/hellonode:latest 
-               """
+                sh """
+                docker run -p 3000:3000 -d --env-file env.list arwa98/hellonode:latest 
+                """
             }
         }
     }
 }
-
-// --env-file .env
